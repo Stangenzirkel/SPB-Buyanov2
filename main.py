@@ -6,10 +6,31 @@ from PyQt5 import uic
 from random import randint
 
 
-class MyWidget(QMainWindow):
+class Ui_Form(object):
+    def setupUi(self, Form):
+        Form.setObjectName("Form")
+        Form.resize(400, 446)
+        self.label = QtWidgets.QLabel(Form)
+        self.label.setGeometry(QtCore.QRect(10, 49, 380, 380))
+        self.label.setText("")
+        self.label.setObjectName("label")
+        self.pushButton = QtWidgets.QPushButton(Form)
+        self.pushButton.setGeometry(QtCore.QRect(0, 10, 113, 32))
+        self.pushButton.setObjectName("pushButton")
+
+        self.retranslateUi(Form)
+        QtCore.QMetaObject.connectSlotsByName(Form)
+
+    def retranslateUi(self, Form):
+        _translate = QtCore.QCoreApplication.translate
+        Form.setWindowTitle(_translate("Form", "Form"))
+        self.pushButton.setText(_translate("Form", "Создать"))
+
+
+class MyWidget(QMainWindow, Ui_Form):
     def __init__(self):
         super().__init__()
-        uic.loadUi('UI.ui', self)
+        self.setupUi(self)
         self.event = False
         self.pushButton.clicked.connect(self.paint)
 
@@ -21,7 +42,6 @@ class MyWidget(QMainWindow):
         if self.event:
             qp = QPainter()
             qp.begin(self)
-            qp.setPen(QColor(255, 226, 6))
             self.draw_square(qp)
             qp.end()
 
@@ -30,6 +50,7 @@ class MyWidget(QMainWindow):
             self.size = randint(30, 150)
             self.x = randint(0, 380 - self.size)
             self.y = randint(0, 380 - self.size)
+            qp.setPen(QColor(randint(0, 255), randint(0, 255), randint(0, 255)))
             qp.drawEllipse(self.x, self.y, self.size, self.size)
 
 
